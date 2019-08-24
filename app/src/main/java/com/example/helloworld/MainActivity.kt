@@ -1,88 +1,106 @@
 package com.example.helloworld
 
-import android.annotation.SuppressLint
+import android.Manifest
+import android.app.AlertDialog
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.beust.klaxon.JsonArray
-import com.beust.klaxon.JsonObject
-import com.beust.klaxon.Klaxon
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.content_main.*
-import okhttp3.*
-import org.json.JSONArray
-import org.json.JSONObject
-import java.io.IOException
+import android.content.Intent
+
+
 
 class MainActivity : AppCompatActivity() {
 
-    private val client = OkHttpClient()
+    var fusedLocationClient: FusedLocationProviderClient? = null
 
-    private var data : Weather? = null
-
-    private val url =  "https://api.openweathermap.org/data/2.5/weather?q=Budapest&appid=43a9f1572a829eefaf76bb03be055377"
-
-    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-        bigButton.setOnClickListener {
-            run(url)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-            if(data != null){
+        if (checkPermission(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+            fusedLocationClient?.lastLocation?.
+                addOnSuccessListener(this
+                ) { location : Location? ->
+                    // Got last known location. In some rare
+                    // situations this can be null.
+                    if(location == null) {
+                        // TODO, handle it
+                    } else location.apply {
 
-                val weather = data as Weather
+                        var intent = Intent(this@MainActivity,DisplayWeatherActivity::class.java)
+                        intent.putExtra("latitude" , location.latitude)
+                        intent.putExtra("longitude",location.longitude)
 
-                place.text = weather.place
-                temp.text = weather.temp.toString() + " C°"
-                humidity.text = weather.humidity.toString()+" %"
-                desc.text = weather.description
-            }
-
-
+                        startActivity(intent)
+                    }
+                }
         }
+
+
+
+
+
+
     }
 
+    private val PERMISSION_ID = 42
+    private fun checkPermission(vararg perm:String) : Boolean {
+        val havePermissions = perm.toList().all {
+            ContextCompat.checkSelfPermission(this,it) ==
+                    PackageManager.PERMISSION_GRANTED
+        }
+        if (!havePermissions) {
+            if(perm.toList().any {
+                    ActivityCompat.
+                        shouldShowRequestPermissionRationale(this, it)}
+            ) {
 
+                ActivityCompat.requestPermissions(this, perm, PERMISSION_ID)
+                /*val dialog = AlertDialog.Builder(this)
+                    .setTitle("Permission")
+                    .setMessage("Permission needed!")
+                    .setPositiveButton("OK") { id, v ->
+                        ActivityCompat.requestPermissions(
+                            this, perm, PERMISSION_ID)
+                    }
+                    .setNegativeButton("No", {id, v -> })
+                    .create()
+                dialog.show()
 
-
-    private fun run(url: String) {
-        val request = Request.Builder()
-            .url(url)
-            .build()
-
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-
-                println("Failed to call api " + e.message)
+                 */
+            } else {
+                ActivityCompat.requestPermissions(this, perm, PERMISSION_ID)
             }
-            override fun onResponse(call: Call, response: Response) {
-                val root = JSONObject(response.body()?.string())
+            return false
+        }
+        return true
+    }
 
-                response.body()?.close()
-                val  name : String = root.getString("name")
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSION_ID -> {
 
-
-                val weather = JSONObject(JSONArray(root.getString("weather"))[0].toString())
-
-                val main = JSONObject(root.getString("main"))
-                val wind = JSONObject(root.getString("wind"))
-
-                val ret = Weather(name, weather.getString("description") , main.getDouble("temp") - 273.15 , wind.getInt("speed") , main.getInt("humidity"))
-
-
-                data = ret
+                println("Permission not granted!")
 
             }
-
-        })
-
+        }
     }
 }
 
 
-data class Weather(val place : String , val description : String ,  val temp : Double , val windspeed : Int , val humidity : Int)
 
 
 
