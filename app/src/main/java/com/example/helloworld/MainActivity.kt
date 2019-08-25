@@ -2,6 +2,7 @@ package com.example.helloworld
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -13,19 +14,52 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.content_main.*
 import android.content.Intent
-
+import android.content.SharedPreferences
+import java.io.*
 
 
 class MainActivity : AppCompatActivity() {
 
     var fusedLocationClient: FusedLocationProviderClient? = null
 
+    private val PREFS_NAME = "kotlincodes"
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val sharedPref: SharedPreferences = this@MainActivity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+
+        submit_button.setOnClickListener {
+
+            val location = location_text.text
+
+            if(!location.isNullOrEmpty()){
+
+                var intent = Intent(this@MainActivity, DisplayWeatherActivity::class.java)
+                intent.putExtra("location", location.toString())
+
+                val editor: SharedPreferences.Editor = sharedPref.edit()
+                editor.putString("location", location.toString())
+                editor.apply()
+
+                startActivity(intent)
+            }else{
+                val builder = AlertDialog.Builder(this@MainActivity)
+                builder.setTitle("ERROR")
+                builder.setMessage("Nem írtál be helyszínt!\nKérlek írj be egy megfelelő helyszínt!")
+                builder.setPositiveButton("Ok"){dialog, which ->
+                }
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+            }
+
+
+        }
 
         if (checkPermission(
                 Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -36,7 +70,17 @@ class MainActivity : AppCompatActivity() {
                     // Got last known location. In some rare
                     // situations this can be null.
                     if(location == null) {
-                        // TODO, handle it
+
+
+                        val prefLoc  = sharedPref.getString("location", null)
+
+                        if(prefLoc != null) {
+
+                            var intent = Intent(this@MainActivity, DisplayWeatherActivity::class.java)
+                            intent.putExtra("location", prefLoc.toString())
+
+                            startActivity(intent)
+                        }
                     } else location.apply {
 
                         var intent = Intent(this@MainActivity,DisplayWeatherActivity::class.java)
@@ -48,12 +92,8 @@ class MainActivity : AppCompatActivity() {
                 }
         }
 
-
-
-
-
-
     }
+
 
     private val PERMISSION_ID = 42
     private fun checkPermission(vararg perm:String) : Boolean {
@@ -68,18 +108,6 @@ class MainActivity : AppCompatActivity() {
             ) {
 
                 ActivityCompat.requestPermissions(this, perm, PERMISSION_ID)
-                /*val dialog = AlertDialog.Builder(this)
-                    .setTitle("Permission")
-                    .setMessage("Permission needed!")
-                    .setPositiveButton("OK") { id, v ->
-                        ActivityCompat.requestPermissions(
-                            this, perm, PERMISSION_ID)
-                    }
-                    .setNegativeButton("No", {id, v -> })
-                    .create()
-                dialog.show()
-
-                 */
             } else {
                 ActivityCompat.requestPermissions(this, perm, PERMISSION_ID)
             }
@@ -93,12 +121,23 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             PERMISSION_ID -> {
 
-                println("Permission not granted!")
+                val sharedPref: SharedPreferences = this@MainActivity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                val prefLoc  = sharedPref.getString("location", null)
+
+                if(prefLoc != null) {
+
+                    var intent = Intent(this@MainActivity, DisplayWeatherActivity::class.java)
+                    intent.putExtra("location", prefLoc.toString())
+
+                    startActivity(intent)
+                }
 
             }
         }
     }
 }
+
+
 
 
 

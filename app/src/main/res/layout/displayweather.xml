@@ -22,7 +22,7 @@
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
 
-    <include layout="@layout/_displayweather"/>
+    <include layout="@layout/_displayweather" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
