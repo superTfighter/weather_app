@@ -1,0 +1,28 @@
+<animation-list android:id="@+id/clouds"
+    android:oneshot="false"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/clouds00000" android:duration="250" />
+    <item android:drawable="@drawable/clouds00001" android:duration="250" />
+    <item android:drawable="@drawable/clouds00002" android:duration="250" />
+    <item android:drawable="@drawable/clouds00003" android:duration="250" />
+    <item android:drawable="@drawable/clouds00004" android:duration="250" />
+    <item android:drawable="@drawable/clouds00005" android:duration="250" />
+    <item android:drawable="@drawable/clouds00006" android:duration="250" />
+    <item android:drawable="@drawable/clouds00007" android:duration="250" />
+    <item android:drawable="@drawable/clouds00008" android:duration="250" />
+    <item android:drawable="@drawable/clouds00009" android:duration="250" />
+    <item android:drawable="@drawable/clouds00010" android:duration="250" />
+    <item android:drawable="@drawable/clouds00011" android:duration="250" />
+    <item android:drawable="@drawable/clouds00012" android:duration="250" />
+    <item android:drawable="@drawable/clouds00013" android:duration="250" />
+    <item android:drawable="@drawable/clouds00014" android:duration="250" />
+    <item android:drawable="@drawable/clouds00015" android:duration="250" />
+    <item android:drawable="@drawable/clouds00016" android:duration="250" />
+    <item android:drawable="@drawable/clouds00017" android:duration="250" />
+    <item android:drawable="@drawable/clouds00018" android:duration="250" />
+    <item android:drawable="@drawable/clouds00019" android:duration="250" />
+
+
+
+</animation-list>

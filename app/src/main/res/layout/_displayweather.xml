@@ -2,12 +2,95 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity"
+    tools:context=".DisplayWeatherActivity"
     tools:showIn="@layout/displayweather">
+
+    <ImageView
+        android:id="@+id/threeDayImage"
+        android:layout_width="90dp"
+        android:layout_height="77dp"
+        app:layout_constraintBottom_toTopOf="@+id/nextDay"
+        app:layout_constraintEnd_toEndOf="@+id/threeDay" />
+
+    <TextView
+        android:id="@+id/threeDay"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="48dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.89"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/threeDayTempLab"
+        android:layout_width="90dp"
+        android:layout_height="28dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/nextDayImage"
+        app:layout_constraintEnd_toEndOf="@+id/threeDayImage"
+        app:layout_constraintTop_toBottomOf="@+id/temperature"
+        app:layout_constraintVertical_bias="0.994" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="159dp"
+        android:layout_height="127dp"
+        android:layout_marginTop="6dp"
+        android:progressTint="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/twoDay"
+        app:layout_constraintEnd_toStartOf="@+id/threeDayImage"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/twoDayImage"
+        app:layout_constraintTop_toBottomOf="@+id/twoDayTempLab"
+        app:layout_constraintVertical_bias="0.636"></ProgressBar>
+
+    <TextView
+        android:id="@+id/twoDayTempLab"
+        android:layout_width="90dp"
+        android:layout_height="28dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/nextDayImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/temperature"
+        app:layout_constraintVertical_bias="0.994" />
+
+    <TextView
+        android:id="@+id/twoDay"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="48dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/twoDayImage"
+        android:layout_width="90dp"
+        android:layout_height="77dp"
+        app:layout_constraintBottom_toTopOf="@+id/nextDay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/iconImage"
@@ -20,13 +103,50 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.268" />
 
+    <ImageView
+        android:id="@+id/nextDayImage"
+        android:layout_width="90dp"
+        android:layout_height="77dp"
+        app:layout_constraintBottom_toTopOf="@+id/nextDay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.112"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
-        android:id="@+id/non_editable3"
+        android:id="@+id/nextDay"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="48dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.112"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/nextDayTempLab"
+        android:layout_width="90dp"
+        android:layout_height="28dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/nextDayImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.112"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/temperature"
+        app:layout_constraintVertical_bias="0.994" />
+
+    <TextView
+        android:id="@+id/non_editable2"
         android:layout_width="176dp"
         android:layout_height="35dp"
         android:fontFamily="sans-serif"
         android:text="Szél:"
         android:textAlignment="center"
+        android:textColor="@color/colorAccent"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.982"
@@ -42,6 +162,7 @@
         android:fontFamily="sans-serif"
         android:text="km/h"
         android:textAlignment="center"
+        android:textColor="@color/colorAccent"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.982"
@@ -55,8 +176,8 @@
         android:layout_width="225dp"
         android:layout_height="73dp"
         android:fontFamily="sans-serif"
-        android:text="°"
         android:textAlignment="center"
+        android:textColor="@color/colorAccent"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -67,11 +188,28 @@
         app:layout_constraintVertical_bias="0.375" />
 
     <TextView
+        android:id="@+id/realtemp"
+        android:layout_width="227dp"
+        android:layout_height="33dp"
+        android:fontFamily="sans-serif"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.021"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.458" />
+
+    <TextView
         android:id="@+id/location"
         android:layout_width="320dp"
         android:layout_height="84dp"
         android:fontFamily="sans-serif"
         android:textAlignment="center"
+        android:textColor="@color/colorAccent"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -85,6 +223,7 @@
         android:layout_height="33dp"
         android:fontFamily="sans-serif"
         android:textAlignment="center"
+        android:textColor="@color/colorAccent"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -100,6 +239,7 @@
         android:fontFamily="sans-serif"
         android:text="Páratartalom:"
         android:textAlignment="center"
+        android:textColor="@color/colorAccent"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.982"
@@ -109,12 +249,28 @@
         app:layout_constraintVertical_bias="0.255" />
 
     <TextView
+        android:id="@+id/dayLab"
+        android:layout_width="161dp"
+        android:layout_height="66dp"
+        android:fontFamily="sans-serif"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.019"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.271" />
+
+    <TextView
         android:id="@+id/humidity"
         android:layout_width="176dp"
         android:layout_height="35dp"
         android:fontFamily="sans-serif"
         android:text="%"
         android:textAlignment="center"
+        android:textColor="@color/colorAccent"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.982"
@@ -132,6 +288,7 @@
         android:layout_marginBottom="16dp"
         android:text="Kérlek nyomd meg a vissza gombot új hely megadásához!"
         android:textAlignment="center"
+        android:textColor="@color/colorAccent"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
